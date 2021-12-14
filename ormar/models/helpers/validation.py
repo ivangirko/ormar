@@ -21,6 +21,7 @@ import pydantic
 from pydantic.class_validators import make_generic_validator
 from pydantic.fields import ModelField, SHAPE_LIST
 from pydantic.main import SchemaExtraCallable
+from pydantic.utils import lenient_issubclass
 
 import ormar  # noqa: I100, I202
 from ormar.models.helpers.models import meta_field_not_set
@@ -203,9 +204,9 @@ def get_pydantic_example_repr(type_: Any) -> Any:
     :return: representation to include in example
     :rtype: Any
     """
-    if issubclass(type_, (numbers.Number, decimal.Decimal)):
+    if lenient_issubclass(type_, (numbers.Number, decimal.Decimal)):
         return 0
-    if issubclass(type_, pydantic.BaseModel):
+    if lenient_issubclass(type_, pydantic.BaseModel):
         return generate_pydantic_example(pydantic_model=type_)
     return "string"
 
